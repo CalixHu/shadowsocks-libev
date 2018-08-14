@@ -18,7 +18,7 @@ FROM alpine as builder
 
 LABEL version="0.1"
 
-RUN mkdir /usr/local/src && apk update && apk add binutils \
+RUN mkdir /usr/local/src && apk update && apk add cmake binutils \
         build-base \
         readline-dev \
         openssl-dev \
