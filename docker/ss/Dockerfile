@@ -32,7 +32,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositorie
     && git submodule update --init --recursive \
     && ./autogen.sh \
     && ./configure && make \
-    && make install \
+    && make install
 
 RUN apk update && apk add readline \
         openssl &&\
