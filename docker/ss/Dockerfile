@@ -1,3 +1,19 @@
+FROM shadowsocks/shadowsocks-libev
+MAINTAINER thatqhu
+USER root
+ADD ./config.json /etc/shadowsocks-libev/
+
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
+    && apk update \
+    && apk add git \
+    && apk add gcc autoconf make libtool automake zlib-dev openssl asciidoc xmlto libpcre32 libev-dev g++ linux-headers \
+    && git clone https://github.com/shadowsocks/simple-obfs.git \
+    && cd simple-obfs \
+    && git submodule update --init --recursive \
+    && ./autogen.sh \
+    && ./configure && make \
+    && make install
+
 FROM alpine as builder
 
 LABEL version="0.1"
@@ -17,22 +33,6 @@ RUN git clone https://github.com/SoftEtherVPN/SoftEtherVPN.git
 WORKDIR /usr/local/src/SoftEtherVPN
 
 RUN ./configure && make
-
-FROM shadowsocks/shadowsocks-libev
-MAINTAINER thatqhu
-USER root
-ADD ./config.json /etc/shadowsocks-libev/
-
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
-    && apk update \
-    && apk add git \
-    && apk add gcc autoconf make libtool automake zlib-dev openssl asciidoc xmlto libpcre32 libev-dev g++ linux-headers \
-    && git clone https://github.com/shadowsocks/simple-obfs.git \
-    && cd simple-obfs \
-    && git submodule update --init --recursive \
-    && ./autogen.sh \
-    && ./configure && make \
-    && make install
 
 RUN apk update && apk add readline \
         openssl &&\
