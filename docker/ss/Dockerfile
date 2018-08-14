@@ -29,6 +29,7 @@ RUN mkdir /usr/local/src && apk update && apk add cmake binutils \
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so
 WORKDIR /usr/local/src
 RUN git clone https://github.com/SoftEtherVPN/SoftEtherVPN.git
+RUN git submodule update --init --recursive
 
 WORKDIR /usr/local/src/SoftEtherVPN
 
